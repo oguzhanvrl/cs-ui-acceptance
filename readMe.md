@@ -3,6 +3,7 @@
 - maven,
 - junit,
 - pom pattern...
+- NOT: Bu teknolojileri seçememin nedeni görüşme esnasında selenium kullandığınızı öğrendim. Onun dışında proje kök yapısı için Maven'ı & test framework'ü için de JUnit'i kullandım. (Api acceptance testlerinde TestNG kullandım farklılık olsun diye) Ama gerçek projede çalışsam selenium yerine cypress kullandırdım :)
 
 #### ACCEPTANCE CASES:
 |    -------  | -------------------------------------------------------------------------------------------- |
