@@ -1,12 +1,14 @@
 package ui.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ui.base.Language;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class LoginPage extends BasePage {
 
@@ -18,6 +20,7 @@ public class LoginPage extends BasePage {
     public LoginPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
+        this.loginUrl = baseUrl + Language.SPAIN;
     }
 
     public LoginPage(WebDriver driver, Language language) {
@@ -40,7 +43,10 @@ public class LoginPage extends BasePage {
     }
 
     public List<String> getLoginErrorMessages() {
-        return List.of(getEmailErrorMessage(), getPasswordErrorMessage());
+        List<String> errorMessages = new ArrayList<>(List.of(getEmailErrorMessage(), getPasswordErrorMessage()));
+        errorMessages.removeAll(Collections.singleton(""));
+
+        return errorMessages;
     }
 
     public String getEmailErrorMessage() {
@@ -63,9 +69,27 @@ public class LoginPage extends BasePage {
         }
     }
 
-    public String getLoginEmail() {
-        driver.get(baseUrl + "/account/edit-information");
+    public String getActiveUserEmail() {
+        try {
+            WebElement profileButton = driver.findElement(By.xpath("//nav[@class='user-menu']//li[@class='user-menu__item user-menu__item--account']"));
+            profileButton.click();
 
-        return driver.findElement(By.xpath("//input[@id='Email']")).getText();
+            WebElement profileInformationButton = driver.findElement(By.xpath("//a[contains(@href, 'account/edit-information')]"));
+            profileInformationButton.click();
+
+            WebElement emailInput = driver.findElement(By.xpath("//input[@id='Email']"));
+            return emailInput.getAttribute("value");
+        } catch (NoSuchElementException ex) {
+            return "";
+        }
+
+    }
+
+    public Boolean isLogOutButtonEnabled() {
+        try {
+            return driver.findElement(By.xpath("//div[@class='header__bottom']//a[@title='Logout']")).isEnabled();
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
     }
 }

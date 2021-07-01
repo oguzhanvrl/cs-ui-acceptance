@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="UIAcceptance" configfailurepolicy="continue" parallel="classes" thread-count="5">
+    <test name="Regression-AcceptanceTests" preserve-order="false">
+        <classes>
+            <class name="ui.page.SignInPageTest"/>
+        </classes>
+    </test>
+</suite>

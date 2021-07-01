@@ -34,18 +34,6 @@ public class SignInPageTest extends BaseTest {
         System.out.println("Testler sonlandı.");
     }
 
-
-    //CASE-1
-    @Test
-    public void shouldLoginWithValidEmailAndPassword() {
-        loginPage = new LoginPage(driver, Language.SPAIN);
-
-        loginPage.login(EMAIL, PASSWORD);
-
-        Assert.assertEquals("Geçerli değerler ile giriş yapılmak istenir, kullanıcı bilgileri kontrol edilir.", loginPage.getLoginEmail(), EMAIL);
-    }
-
-    //CASE-2
     @Test
     public void shouldNotLoginWithInvalidEmailAndPassword() {
         loginPage = new LoginPage(driver, Language.MEXICO);
@@ -56,7 +44,6 @@ public class SignInPageTest extends BaseTest {
         Assert.assertTrue("Geçersiz değerler ile giriş yapılmak istenir, hata mesajı ediliyor.", loginPage.getLoginErrorMessages().equals(expectedErrorMessages));
     }
 
-    //CASE-3
     @Test
     public void shouldNotLoginWithEmptyEmailAndPassword() {
         loginPage = new LoginPage(driver, Language.COLOMBIA);
@@ -66,5 +53,16 @@ public class SignInPageTest extends BaseTest {
         List<String> expectedErrorMessages = List.of("Required field.", "Required field.");
 
         Assert.assertTrue("Boş değerler ile giriş yapılmak istenir, hata mesajı ediliyor.", loginPage.getLoginErrorMessages().equals(expectedErrorMessages));
+    }
+
+    @Test
+    public void shouldLoginWithValidEmailAndPassword() {
+        loginPage = new LoginPage(driver, Language.SPAIN);
+
+        loginPage.login(EMAIL, PASSWORD);
+
+        Assert.assertEquals("Geçerli değerler ile giriş yapılmak istenir, LogOut butonun aktifleştiğinin kontrolü yapılır.", loginPage.isLogOutButtonEnabled(), true);
+
+        Assert.assertEquals("Geçerli değerler ile giriş yapılmak istenir, kullanıcı bilgileri kontrol edilir.", loginPage.getActiveUserEmail(), EMAIL);
     }
 }
